@@ -15,7 +15,7 @@ from langchain.vectorstores import FAISS
 from langchain.chains.summarize import load_summarize_chain
 from langchain.tools import Tool
 from langchain.agents import initialize_agent, AgentType
-from langchain.schema import SystemMessage
+# from langchain.schema import SystemMessage
 from config.config import settings
 
 logger = logging.getLogger(__name__)

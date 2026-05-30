@@ -48,3 +48,4 @@ class Retriever:
         chunk_embeddings = self.model.encode(top_chunks, normalize_embeddings=True).astype("float32")
 
         return top_chunks, chunk_embeddings
+    

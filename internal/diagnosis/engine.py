@@ -86,3 +86,4 @@ class DiagnosisEngine:
             f"Diagnosed Mental Disorder: <disorder name or None>\n\n"
             f"Assistant:"
         )
+    

@@ -69,3 +69,4 @@ def log_feedback(session_id: str, feedback: str) -> None:
     }
     _append_row(settings.feedback_log_path, row)
     logger.info(f"Logged feedback for session: {session_id}")
+    

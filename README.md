@@ -1,149 +1,177 @@
+# SafeSpace AI
 
-# 🧠 SafeSpace AI – Mental Health Diagnosis & Agent System
-
-Transforming mental health support with voice-enabled diagnosis and AI-powered emotional intelligence.
-
----
-
-## 🧾 Overview
-
-**SafeSpace AI** is an innovative mental health diagnostic platform designed to provide AI-powered emotional support and psychological assessments. Leveraging Large Language Models (LLMs), Whisper-based voice recognition, and Retrieval-Augmented Generation (RAG), SafeSpace AI enables early identification of mental health conditions based on user-reported symptoms. It features a multi-modal interface that supports both text and voice inputs and offers contextualized, evidence-based diagnostic suggestions for better mental wellness outcomes.
+A production-grade mental health diagnosis system that combines voice input, retrieval-augmented generation, and a conversational agent to provide AI-powered emotional support and early disorder identification.
 
 ---
 
-## 🌟 Key Achievements
+## Architecture
 
-- Voice-enabled mental health assistant with Whisper integration
-- Gemma-2 9B fine-tuned for mental health reasoning via chat templates
-- RAG-based context construction using FAISS and BGE embeddings
-- Generated personalized responses with diagnosis, symptoms, treatment, helpline
-- CSV feedback logger and PDF generator for session summaries
-
----
-
-## 🧠 Technology Stack
-
-| Component             | Technology Used                      | Purpose                                      |
-|-----------------------|---------------------------------------|----------------------------------------------|
-| LLM                   | `gemma-2-9b-it`                       | Mental health diagnosis via text generation  |
-| Embeddings            | `BAAI/bge-base-en-v1.5`               | Semantic encoding of user input              |
-| Voice Input           | `openai/whisper-base`                | Speech-to-text for mental health queries     |
-| Interface             | `Gradio`                              | Web-based voice/text app interface           |
-| Retrieval Engine      | `FAISS`                               | Contextual document retrieval                |
-| Emotion Classifier    | `nateraw/bert-base-uncased-emotion`   | Optional user sentiment tagging              |
-| PDF/CSV Tools         | `Fpdf`, `csv`, `Pandas`               | Report generation and feedback storage       |
-
----
-
-## 🧩 Core Modules
-
-### 🔍 Retrieval-Augmented Generation (RAG)
-- Chunked documents stored and indexed via FAISS
-- Top-5 documents retrieved based on semantic similarity
-- Combined into context prompt for Gemma LLM
-
-### 🤖 Mental Health Diagnosis Engine
-- Prompts LLM to return:
-  1. **Diagnosed Mental Disorder**
-  2. **Matching Symptoms**
-  3. **Personalized Treatment**
-  4. **Helpline Numbers**
-  5. **Source Link (if available)**
-
-### 🎙️ Voice Interface
-- User speaks symptoms
-- Whisper converts voice to text
-- Pipeline processes response same as text query
-
----
-
-## 📊 Sample Model Output
-
-| Input Query                            | Diagnosis       | Treatment Provided             |
-|----------------------------------------|-----------------|-------------------------------|
-| "I’ve lost interest in everything..."  | Depression      | CBT, journaling, support lines |
-| "I want to end everything..."          | Suicidal        | Crisis helpline & emergency   |
-| "I get panic attacks often"            | Anxiety         | Breathing techniques, therapy |
-
----
-
-## 🗂 Dataset & Preprocessing
-
-- Internal dataset with 150+ user queries across 6 major disorders
-- Stratified sampling for balanced class-wise performance
-- Text normalization, prompt tuning, semantic embedding
-
----
-
-## 📈 Performance Evaluation
-
-| Phase              | Metric            | Value         |
-|--------------------|-------------------|---------------|
-| Classification     | Accuracy (manual) | ~83%          |
-| Retrieval quality  | Top-5 relevance   | High (FAISS)  |
-| Output readability | Human eval score  | Strong        |
-
----
-
-## 🧪 Installation & Setup
-
-```bash
-git clone https://github.com/JaamieMaarsh/SafeSpace-AI.git
-cd SafeSpace-AI
-pip install -r requirements.txt
 ```
+User Input (text or voice)
+   ↓
+Whisper (speech-to-text)
+   ↓
+Emotion Classifier (BERT)
+   ↓
+RAG Retriever (FAISS + BGE embeddings)
+   ↓
+Gemma-2 9B LLM (diagnosis + response generation)
+   ↓
+Confidence Scorer → CSV Logger
+   ↓
+Gradio UI (diagnosis assistant)
 
-Create a `.env` file with:
-
-```bash
-HF_TOKEN=your_huggingface_token
-```
-
-Run the application:
-
-```bash
-python app.py
+User Input (text)
+   ↓
+LangChain Agent
+   ↓
+Tool Router
+   ├── SummarizedDocSearch (OpenAI + FAISS)
+   ├── EmergencyHelpline
+   └── NearbyMentalHealthClinics (Google Maps API)
+   ↓
+Streamlit UI (conversational agent + clinic map)
 ```
 
 ---
 
-## 🏥 Clinical Use Cases
+## Features
 
-- First-line psychological screening in telemedicine apps  
-- Emotional wellness support for anonymous users  
-- Mental health triage assistant for universities and workplaces
-
----
-
-## 🎓 Academic Context
-
-- **Institution**: Northeastern University  
-- **Course**: Generative AI Systems  
-- **Duration**: January 2025 – April 2025  
-- **Project Lead**: Kalyan Kumar Chenchu Malakondaiah  
-- **LinkedIn**: [linkedin.com/in/chenchumalakondaiah](https://www.linkedin.com/in/kalyan-kumar-8170a111b/)
+- Voice and text input via Whisper speech-to-text
+- RAG pipeline using FAISS index and BGE embeddings for context retrieval
+- Gemma-2 9B LLM for diagnosis, symptom matching, and treatment suggestions
+- Emotion detection on user input using BERT classifier
+- Confidence scoring on retrieved context
+- LangChain agent with three tools: document search, helpline suggestions, clinic finder
+- Interactive clinic map rendered with Folium in the Streamlit app
+- Thread-safe CSV logging for diagnosis sessions and user feedback
+- Plotly dashboard for diagnosis distribution analytics
+- Two independent deployable apps: Gradio and Streamlit
+- GitHub Actions CI on every push
 
 ---
 
-## 🪪 License
+## Tech Stack
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+| Component | Technology |
+|-----------|------------|
+| LLM | Gemma-2 9B (google/gemma-2-9b-it) |
+| Embeddings | BAAI/bge-base-en-v1.5 |
+| Voice Input | OpenAI Whisper |
+| Retrieval | FAISS |
+| Emotion Detection | nateraw/bert-base-uncased-emotion |
+| Agent Framework | LangChain |
+| Gradio UI | Gradio 4.x |
+| Streamlit UI | Streamlit 1.30+ |
+| Clinic Search | Google Maps API |
+| Containerisation | Docker Compose |
+| CI/CD | GitHub Actions |
 
 ---
 
-## 🚀 Quick Start
+## Prerequisites
 
+- Python 3.11+
+- Docker Desktop
+- Hugging Face account with access to Gemma-2
+- OpenAI API key
+- Google Maps API key
+
+---
+
+## Running Locally
+
+**1. Clone the repo**
 ```bash
-git clone https://github.com/JaamieMaarsh/SafeSpace-AI.git
-cd SafeSpace-AI
-pip install -r requirements.txt
-python app.py
+git clone https://github.com/kalyan9514/SafeSpace-AI-Mental-Health-Diagnosis-and-Agent-System.git
+cd SafeSpace-AI-Mental-Health-Diagnosis-and-Agent-System
+```
+
+**2. Create your .env file**
+```bash
+cp .env.example .env
+```
+
+**3. Add your credentials to .env**
+```bash
+HUGGINGFACE_TOKEN=your_token_here
+OPENAI_API_KEY=your_key_here
+GOOGLE_MAPS_API_KEY=your_key_here
+```
+
+**4. Start with Docker**
+```bash
+docker compose up -d
+```
+
+Or run individually:
+
+**5. Run the Gradio app**
+```bash
+python cmd/gradio/main.py
+```
+
+**6. Run the Streamlit app**
+```bash
+streamlit run cmd/streamlit/main.py
 ```
 
 ---
 
-## 🙋 Contact
+## Services
 
-For queries, ideas, or collaborations:  
-📬 [LinkedIn – Kalyan Kumar Chenchu Malakondaiah](https://www.linkedin.com/in/kalyan-kumar-8170a111b/)
+| Service | URL |
+|---------|-----|
+| Gradio diagnosis assistant | http://localhost:7860 |
+| Streamlit agent chat | http://localhost:8501 |
 
+---
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| HUGGINGFACE_TOKEN | Token for loading Gemma-2 and other gated models |
+| OPENAI_API_KEY | Used by the LangChain agent in the Streamlit app |
+| GOOGLE_MAPS_API_KEY | Used by the clinic finder tool |
+| LLM_MODEL_ID | LLM model identifier (default: google/gemma-2-9b-it) |
+| EMBEDDING_MODEL_ID | Embedding model (default: BAAI/bge-base-en-v1.5) |
+| WHISPER_MODEL_SIZE | Whisper model size (default: base) |
+| RAG_TOP_K | Number of chunks to retrieve (default: 5) |
+| MAX_NEW_TOKENS | Max tokens for LLM generation (default: 512) |
+
+---
+
+## Project Structure
+
+```
+├── cmd/
+│   ├── gradio/             # Gradio diagnosis assistant entry point
+│   └── streamlit/          # Streamlit agent chat entry point
+├── internal/
+│   ├── rag/                # FAISS retriever and knowledge base loader
+│   ├── diagnosis/          # Engine, confidence scorer, response parser
+│   ├── audio/              # Whisper transcriber
+│   ├── feedback/           # Thread-safe CSV logger
+│   ├── dashboard/          # Plotly analytics
+│   └── agent/              # LangChain agent with tools
+├── config/
+│   └── config.py           # Pydantic settings and path constants
+├── data/                   # FAISS index and knowledge base (not committed)
+├── logs/                   # Diagnosis and feedback CSV logs (not committed)
+├── tests/                  # Unit tests
+├── .github/workflows/
+│   └── ci.yml              # GitHub Actions CI
+├── Dockerfile.gradio       # Docker image for Gradio app
+├── Dockerfile.streamlit    # Docker image for Streamlit app
+├── docker-compose.yml      # All local services
+├── DECISIONS.md            # Architecture decision records
+├── .env.example            # Safe credentials template
+└── requirements.txt        # Python dependencies
+```
+
+---
+
+## Contact
+
+[LinkedIn — Kalyan Kumar Chenchu Malakondaiah](https://www.linkedin.com/in/kalyan-kumar-8170a111b/)
